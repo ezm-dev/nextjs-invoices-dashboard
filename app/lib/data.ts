@@ -62,6 +62,12 @@ export async function fetchCardData() {
          SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
          FROM invoices`;
 
+
+    //Problems:
+   //1.The data requests are creating an unintentional waterfall.
+   //2.The dashboard is static, so any data updates will not be reflected on your application
+   
+   // 1.Solution : requests Waterfall: initiate all promises at the same time  , but if one req need more time ???
     const data = await Promise.all([
       invoiceCountPromise,
       customerCountPromise,
