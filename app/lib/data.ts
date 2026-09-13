@@ -64,10 +64,11 @@ export async function fetchCardData() {
 
 
     //Problems:
-   //1.The data requests are creating an unintentional waterfall.
-   //2.The dashboard is static, so any data updates will not be reflected on your application
+   //1.The data requests are creating an unintentional waterfall.(Promise.all, but if one of the data is slower than others)
+   //2.The dashboard is static, so any data updates will not be reflected on your application(static vs Dynamic rendering)
    
    // 1.Solution : requests Waterfall: initiate all promises at the same time  , but if one req need more time ???
+   //With dynamic rendering, your application is only as fast as your slowest data fetch.(Next Learn)
     const data = await Promise.all([
       invoiceCountPromise,
       customerCountPromise,
