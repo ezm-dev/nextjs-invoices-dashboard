@@ -8,11 +8,13 @@ export default function Search({ placeholder }: { placeholder: string }) {
   const searchParams = useSearchParams()
   const pathname= usePathname()
   const {replace} = useRouter()
-const handleSearch = useDebouncedCallback((term:string)=>{
 
-    console.log('Search term:', term);
+  const handleSearch = useDebouncedCallback((term:string)=>{
+    //console.log('Search term:', term);
     //get the current search params and update the query param with the new search term 
     const currentParams = new URLSearchParams(searchParams) 
+    currentParams.set('page', '1') //reset the page to 1 when a new search is performed
+    
     if(term){
       currentParams.set('query', term)
     }else{
