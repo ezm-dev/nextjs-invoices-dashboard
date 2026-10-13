@@ -1,5 +1,33 @@
-## Next.js App Router Course - Starter
+# Next.js Dashboard App
 
-This is the starter template for the Next.js App Router Course. It contains the starting code for the dashboard application.
+A full-stack dashboard application built with **Next.js, React, TypeScript, and Tailwind CSS**, based on the Vercel Learn tutorial.
 
-For more information, see the [course curriculum](https://nextjs.org/learn) on the Next.js Website.
+Overview
+## Features
+- Responsive dashboard UI
+- Server-side data fetching
+- Database integration
+- Search and pagination
+- Data management and authentication 
+
+## Tech Stack
+- Next.js App Router
+- TypeScript
+- Tailwind CSS
+- SQL database
+- Vercel
+
+## Getting Started
+
+```bash
+pnpm install
+pnpm dev
+```
+
+## Deployment
+
+Deployed on Vercel. Configure the required environment variables and database connection before deployment.
+
+## Resources
+- [Next.js Dashboard Tutorial](https://nextjs.org/learn/dashboard-app)
+- [Next.js Documentation](https://nextjs.org/docs)
