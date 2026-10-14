@@ -1,6 +1,11 @@
 'use server' // all exported functions in this file will be treated as server actions, allowing them to be called from the client and executed on the server.
 import { Palanquin_Dark } from 'next/font/google';
 import {z} from 'zod'
+import postgres from 'postgres'
+import {revalidatePath} from 'next/cache'
+import {redirect} from 'next/navigation'
+
+const sql = postgres(process.env.POSTGRES_URL!,{ssl: 'require'})
 
 const FromSchema = z.object({
     id: z.string(),
@@ -9,12 +14,11 @@ const FromSchema = z.object({
     status: z.enum(['pending', 'paid']),
     date: z.string()
 })
-
 const CreateInvoiceSchema = FromSchema.omit({id: true, date: true})
 
 export async function createInvoice(formData: FormData){
 const{ customerId, amount, status} = CreateInvoiceSchema.parse({
-    cusomerId: formData.get('customerId'),
+    customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status')
 })
@@ -22,4 +26,10 @@ const{ customerId, amount, status} = CreateInvoiceSchema.parse({
 const amountInCents = Math.round(amount * 100)
 const date = new Date().toISOString().split('T')[0]
 
+await sql`
+INSERT INTO invoices (customer_id, amount, status, date)
+VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
+`
+revalidatePath('/dashboard/invoices')
+redirect('/dashboard/invoices')
 }
