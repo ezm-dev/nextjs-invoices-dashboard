@@ -15,7 +15,13 @@ const FromSchema = z.object({
     date: z.string()
 })
 const CreateInvoiceSchema = FromSchema.omit({id: true, date: true})
+const UpdateInvoiceSchema = FromSchema.omit({id: true, date: true})
 
+
+/**
+ * Creates a new invoice
+ * @param formData 
+ */
 export async function createInvoice(formData: FormData){
 const{ customerId, amount, status} = CreateInvoiceSchema.parse({
     customerId: formData.get('customerId'),
@@ -32,4 +38,37 @@ VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
 `
 revalidatePath('/dashboard/invoices')
 redirect('/dashboard/invoices')
+}
+
+
+
+/**
+ * Updates an existing invoice
+ * @param id 
+ * @param formData 
+ */
+export async function updateInvoice(id: string, formData: FormData){
+    const{ customerId, amount, status} = UpdateInvoiceSchema.parse({
+        customerId: formData.get('customerId'),
+        amount: formData.get('amount'),
+        status: formData.get('status')
+    })
+    const amountInCents = Math.round(amount * 100)
+
+    await sql`
+        UPDATE invoices
+        SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
+        WHERE id = ${id}
+    `
+    revalidatePath('/dashboard/invoices')
+    redirect('/dashboard/invoices')
+}
+
+export async function deleteInvoice(id: string){
+    await sql`
+        DELETE FROM invoices
+        WHERE id = ${id}
+    `
+    revalidatePath('/dashboard/invoices')
+    redirect('/dashboard/invoices')
 }
