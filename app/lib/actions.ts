@@ -4,6 +4,9 @@ import {z} from 'zod'
 import postgres from 'postgres'
 import {revalidatePath} from 'next/cache'
 import {redirect} from 'next/navigation'
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
+
 
 const sql = postgres(process.env.POSTGRES_URL!,{ssl: 'require'})
 
@@ -111,4 +114,24 @@ try{
 }
     revalidatePath('/dashboard/invoices')
     redirect('/dashboard/invoices')
+}
+
+// Authenticate user credentials
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signIn('credentials', formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid credentials.';
+        default:
+          return 'Something went wrong.';
+      }
+    }
+    throw error;
+  }
 }

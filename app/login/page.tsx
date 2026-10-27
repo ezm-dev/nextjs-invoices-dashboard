@@ -1,6 +1,12 @@
 import AcmeLogo from '@/app/ui/acme-logo';
 import LoginForm from '@/app/ui/login-form';
 import { Suspense } from 'react';
+import { Metadata } from 'next';
+
+
+export const metadata: Metadata = {
+  title: 'Login',
+}
  
 export default function LoginPage() {
   return (
@@ -14,6 +20,11 @@ export default function LoginPage() {
         <Suspense>
           <LoginForm />
         </Suspense>
+        <div className="text-left text-sm text-gray-500">
+          <p>For Testing:</p>
+          <p>Email: user@nextmail.com</p>
+          <p>Password: 123456</p>
+          </div>
       </div>
     </main>
   );
