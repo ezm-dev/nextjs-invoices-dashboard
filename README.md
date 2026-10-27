@@ -8,7 +8,8 @@ Overview
 - Server-side data fetching
 - Database integration
 - Search and pagination
-- Data management and authentication 
+- Data management 
+- Authentication 
 
 ## Tech Stack
 - Next.js App Router
